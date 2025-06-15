@@ -2,6 +2,10 @@
 
 ![Arquitectura limpia](./docs/resumen-de-arquitectura-de-la-aplicacion.png)
 
+# Diagrama de clases de la base de datos
+
+![Diagrama de clases](./docs/diagrama-representativo-de-la-base-de-datos.png)
+
 # Instalación y Ejecución
 
 ## Desarrollo (Local)

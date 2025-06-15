@@ -6,6 +6,7 @@ import {
   TaskDatasource,
   TaskRepository,
   TaskEntity,
+  ReadTasksByUserDto,
 } from "../../domain";
 
 export class TaskRepositoryImpl implements TaskRepository {
@@ -25,17 +26,11 @@ export class TaskRepositoryImpl implements TaskRepository {
     
     async getTasksByStatus(readTasksByStatusDto: ReadTasksByStatusDto): Promise<TaskEntity[]> {
         return this.datasource.getTasksByStatus(readTasksByStatusDto);
-    }
+  }
+  
 
-  //   async getAllByUser(userId: string): Promise<TaskEntity[]> {
-  //     return this.datasource.getAllByUser(userId);
-  //   }
+  async getAllByUser(readTasksByUserDto: ReadTasksByUserDto): Promise<TaskEntity[]> {
+      return this.datasource.getAllByUser(readTasksByUserDto);
+  }
 
-  //   async getByStatus(status: string, userId: string): Promise<TaskEntity[]> {
-  //     return this.datasource.getByStatus(status, userId);
-  //   }
-
-  //   async findById(id: string): Promise<TaskEntity> {
-  //     return this.datasource.findById(id);
-  //   }
 }

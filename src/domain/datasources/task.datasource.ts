@@ -1,4 +1,4 @@
-import { CreateTaskDto, DeleteTaskDto, UpdateTaskDto, ReadTasksByStatusDto } from '../dtos';
+import { CreateTaskDto, DeleteTaskDto, UpdateTaskDto, ReadTasksByStatusDto, ReadTasksByUserDto } from '../dtos';
 import { TaskEntity } from '../entities/task.entity';
 
 export abstract class TaskDatasource {
@@ -11,8 +11,10 @@ export abstract class TaskDatasource {
 
   abstract updateById(updateTaskDto: UpdateTaskDto): Promise<TaskEntity>;
 
-    abstract deleteById(deleteTaskDto: DeleteTaskDto): Promise<TaskEntity>;
+  abstract deleteById(deleteTaskDto: DeleteTaskDto): Promise<TaskEntity>;
     
-    abstract getTasksByStatus(readTasksByStatusDto: ReadTasksByStatusDto): Promise<TaskEntity[]>;
+  abstract getTasksByStatus(readTasksByStatusDto: ReadTasksByStatusDto): Promise<TaskEntity[]>;
+  
+   abstract getAllByUser(readTasksByUserDto: ReadTasksByUserDto): Promise<TaskEntity[]>;
 
 }

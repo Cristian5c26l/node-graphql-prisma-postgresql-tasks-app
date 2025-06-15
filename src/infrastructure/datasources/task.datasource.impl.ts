@@ -7,6 +7,7 @@ import {
     DeleteTaskDto,
 TaskEntity,
 ReadTasksByStatusDto,
+ReadTasksByUserDto,
 //   CustomError
 } from "../../domain";
 
@@ -14,7 +15,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
 
     async create(createTaskDto: CreateTaskDto): Promise<TaskEntity> {
       
-        // Auxiliar meanwhile (esto podria recibirse como parametro. Es por conveniencia)
         const column = await prisma.column.findFirst({
             where: { title: createTaskDto.status }
         });
@@ -23,7 +23,6 @@ export class TaskDatasourceImpl implements TaskDatasource {
             throw new Error(`No se encontró una columna con el estado: ${status}`);
         }
 
-        // Fin Auxiliar meanwhile
 
         const task = await prisma.task.create({
             data: {
@@ -91,52 +90,63 @@ export class TaskDatasourceImpl implements TaskDatasource {
             throw new Error(`No se encontró una tarea con el ID: ${taskId}`);
         }
 
-        return await prisma.task.delete({
+        // return await prisma.task.delete({
+        //     where: { id: taskId }
+        // });
+
+        await prisma.task.delete({
             where: { id: taskId }
         });
 
-
+        return TaskEntity.fromObject(task);
     }
 
 
-    // Implementacion de getTasksByStatus basada en:
-    //
-    // console.log('TASKSSSS BY STATUS');
-
-                    // if (!status) {
-                    //     throw new Error('Campos requeridos: userId y status');
-                    // }
-
-                    // const column = await prisma.column.findFirst({
-                    //     where: { title: status }
-                    // });
-
-                    // if (!column) {
-                    //     throw new Error(`No se encontró una columna con el estado: ${status}`);
-                    // }
-
-                    // return await prisma.task.findMany({
-                    //     where: { userId: userId, columnId: column.id }
-                    // });
-
-    getTasksByStatus(readTasksByStatusDto: ReadTasksByStatusDto): Promise<TaskEntity[]> {
+    async getTasksByStatus(readTasksByStatusDto: ReadTasksByStatusDto): Promise<TaskEntity[]> {
         const { userId, status } = readTasksByStatusDto;
 
         if (!userId || !status) {
             throw new Error('Campos requeridos: userId y status');
         }
 
-        return prisma.task.findMany({
-            where: {
-                userId: userId,
-                column: {
-                    title: status
-                }
-            },
-            include: {
-                column: true // Incluye la columna para obtener el estado
-            }
-        }).then(tasks => tasks.map(task => TaskEntity.fromObject(task)));
+        const column = await prisma.column.findFirst({
+            where: { title: status, userId: userId }
+        });
+
+        if (!column) {
+            throw new Error(`No se encontró una columna con el estado: ${status}`);
+        }
+
+        // return await prisma.task.findMany({
+        //     where: { userId: userId, columnId: column.id }
+        // });
+
+        const tasks = await prisma.task.findMany({
+            where: { userId: userId, columnId: column.id },
+        });
+
+        return tasks.map(task => TaskEntity.fromObject(task));
+    }
+
+
+    async getAllByUser(readTasksByUserDto: ReadTasksByUserDto): Promise<TaskEntity[]> {
+        
+        const { userId } = readTasksByUserDto;
+
+        if (!userId) {
+            throw new Error('Campo requerido: userId');
+        }
+
+        // return await prisma.task.findMany({
+        //     where: { userId: userId },
+        // });
+
+        const tasks = await prisma.task.findMany({
+            where: { userId: userId },
+        });
+
+        return tasks.map(task => TaskEntity.fromObject(task));
+
     }
 
 }

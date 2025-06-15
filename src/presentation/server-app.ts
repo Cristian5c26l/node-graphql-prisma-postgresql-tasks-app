@@ -30,10 +30,10 @@ export class ServerApp {
       const PORT = process.env.PORT || 4000;
     server.listen({
       port: PORT, cors: {
-        origin: '*',// Permitir todas las solicitudes de origen
+        origin: '*',// Permitir todas las solicitudes que vengan de sitios externos como netlify
         credentials: true,
 } }).then(({ url }) => {
-  console.log(`Servidor corriendo en ${url}`);
+  console.log(`Servidor Backend API Node Graphql corriendo en ${url}`);
 });
       
     

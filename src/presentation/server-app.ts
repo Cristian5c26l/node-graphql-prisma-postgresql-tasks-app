@@ -28,7 +28,11 @@ export class ServerApp {
     // });
       
       const PORT = process.env.PORT || 4000;
-server.listen({ port: PORT }).then(({ url }) => {
+    server.listen({
+      port: PORT, cors: {
+        origin: '*',// Permitir todas las solicitudes de origen
+        credentials: true,
+} }).then(({ url }) => {
   console.log(`Servidor corriendo en ${url}`);
 });
       

@@ -1,4 +1,6 @@
+# Arquitectura de software del proyecto
 
+![Arquitectura limpia](./docs/resumen-de-arquitectura-de-la-aplicacion.png)
 
 # Instalación y Ejecución
 

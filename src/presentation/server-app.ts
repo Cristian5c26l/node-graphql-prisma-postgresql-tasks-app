@@ -23,8 +23,15 @@ export class ServerApp {
       resolvers: resolvers,
     });
 
-    server.listen().then(({ url }) => {
-      console.log(`Servidor corriendo en ${url}`);
-    });
+    //   server.listen().then(({ url }) => {
+    //   console.log(`Servidor corriendo en ${url}`);
+    // });
+      
+      const PORT = process.env.PORT || 4000;
+server.listen({ port: PORT }).then(({ url }) => {
+  console.log(`Servidor corriendo en ${url}`);
+});
+      
+    
   }
 }
